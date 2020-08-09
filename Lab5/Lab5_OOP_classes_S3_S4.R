@@ -57,3 +57,32 @@ k
 
 # Задание №1 - создать класс Домашнее животное с подклассами (кошка, собака, корова), у которых есть общие методы (наследуемые) и собственные.
 # Задание №2 - создать класс Автомобиль с подклассами и своими методами.
+
+
+# S4 класс - более безопасный с точки зрения типов данных и ошибок в орфограции.
+# S4  класс задается немного по-другому
+setClass("employee",
+         representation(
+           name="character",
+           salary="numeric",
+           union="logical")
+)
+joe <- new("employee", name="Joe", salary=55000, union=T)
+joe
+
+joe@name
+joe@salary
+joe@union
+
+slot(joe, "salary") <- 88000
+joe@salary
+
+# обобщенный метод для класса S4
+setMethod("show", "employee",
+          function(object){
+            inorout <- ifelse(object@union, "is", "is not")
+            cat(object@name, "has a salary of", object@salary,
+                "and", inorout, "in the union", "\n")
+          }
+  )
+joe
