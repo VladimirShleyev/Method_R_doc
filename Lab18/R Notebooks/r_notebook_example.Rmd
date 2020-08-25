@@ -1,0 +1,73 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+  html_notebook: default
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+```{r setup, include=FALSE}
+library(reticulate)
+use_python(python = Sys.which("python3"), required = TRUE)
+```
+
+# Пример R-notebook'a, в котором мы совмещаем R-код и Python-код.
+
+
+С помощью пакета **Reticulate**, мы можем совмещать R и Python в одном rmd-файле.
+Помимо функциональных преимуществ обоих языков программирования, это также дает возможность
+*импортировать лучшие библиотеки и дата-сеты(!)* от каждого из них.
+
+Загрузим Iris dataset
+```{r}
+data(iris)
+```
+
+
+Импортируем нужные нам библиотеки.
+Зафиксируем зерно генератора случайных чисел для воспроизводимости результатов
+```{Python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+#np$random$seed(10)
+np.random.seed(10)
+
+N = 50
+# N <- 50L
+
+x = np.random.rand(N)
+# x <- np.random.rand(N)
+
+y = np.random.rand(N)
+# y <- np.random.rand(N)
+
+colors = np.random.rand(N)
+# colors <- np.random.rand(N)
+
+area = (30 * np.random.rand(N))**2  # 0 to 15 point radii
+# area <- (30 * np.random.rand(N))**2
+
+plt.scatter(x, y, s=area, c=colors, alpha=0.5)
+# plt.scatter(x, y, s=area, c=colors, alpha=0.5)
+
+plt.show()
+# plt.show()
+```
+
+Если запустить код всех блоков (chunks) - в отдельном модальном окне мы увидим диаграмму, а в браузере откроется сгенерированная html-страница.
+
+Мы также можем сохранить наш документ в виде pdf или latex - файла.
+
+
