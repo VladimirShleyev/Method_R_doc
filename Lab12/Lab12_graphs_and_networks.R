@@ -1,6 +1,6 @@
-renv::init() # инициализация виртуального окружения
-renv::install("devtools", "UserNetR", "statnet", "UserNetR", "Moreno") # установка библиотеки из CRAN
-renv::snapshot() # делаем снимок версий библиотек в нашем виртуальном окружении
+#renv::init() # инициализация виртуального окружения
+#renv::install("devtools", "UserNetR", "statnet", "UserNetR") # установка библиотеки из CRAN
+#renv::snapshot() # делаем снимок версий библиотек в нашем виртуальном окружении
 # фиксируем этот список в .lock-файле для возможности восстановления
 # renv::restore() # команда отктиться к предыдушему удачному обновления библиотек
 
@@ -9,11 +9,11 @@ renv::snapshot() # делаем снимок версий библиотек в 
 # Графы и сети. Визуализация, описание, анализ. 
 
 library(devtools) 
-install_github("DougLuke/UserNetR")
-
+#install_github("DougLuke/UserNetR")
+#install.packages("UserNetR")
 library(UserNetR)
 library(statnet) 
-library(Moreno) 
+
 data(Moreno)
 
 gender <- Moreno %v% "gender" 
@@ -29,6 +29,7 @@ lgc <- component.largest(Moreno,result="graph")
 gd <- geodist(lgc)
 max(gd$gdist)  
 gtrans(Moreno,mode="graph")  
+
 netmat1 <- rbind(c(0,1,1,0,0),                 
                  c(0,0,1,1,0),            		     
                  c(0,1,0,0,0),                 
@@ -36,6 +37,7 @@ netmat1 <- rbind(c(0,1,1,0,0),
                  c(0,0,1,0,0)) 
 rownames(netmat1) <- c("A","B","C","D","E") 
 colnames(netmat1) <- c("A","B","C","D","E") 
+
 net1 <- network(netmat1,matrix.type="adjacency") 
 class(net1)
 summary(net1)
@@ -46,6 +48,7 @@ netmat2 <- rbind(c(1,2),
                  c(2,4),                 
                  c(3,2),                 
                  c(5,3)) 
+
 net2 <- network(netmat2,matrix.type="edgelist") 
 network.vertex.names(net2) <- c("A","B","C","D","E") 
 summary(net2)
@@ -78,18 +81,22 @@ network.vertex.names(netval1) <- c("A","B","C","D","E")
 
 list.edge.attributes(netval1)  
 get.edge.attribute(netval1, "like")  
+
 detach(package:statnet) 
+#install.packages("igraph")
 library(igraph) 
 inet1 <- graph.adjacency(netmat1) 
 class(inet1) 
 summary(inet1)  
 str(inet1)  
+
 inet2 <- graph.edgelist(netmat2) 
 summary(inet2)  
 V(inet2)$name <- c("A","B","C","D","E") 
 E(inet2)$val <- c(1:6) 
 summary(inet2)  
 str(inet2)  
+
 detach("package:igraph", unload=TRUE) 
 library(statnet) 
 netmat3 <- rbind(c("A","B"),                 
@@ -114,8 +121,8 @@ plot(Moreno,mode="circle",vertex.cex=1.5)
 plot(Moreno,mode="fruchtermanreingold",vertex.cex=1.5) 
 par(op) 
 op <- par(mar = c(0,0,4,0),mfrow=c(1,2)) 
-gplot(Moreno,gmode="graph",mode="random", vertex.cex=1.5,main="????????? ???????") 
-gplot(Moreno,gmode="graph",mode="fruchtermanreingold", vertex.cex=1.5,main="??????????-?????????") 
+gplot(Moreno,gmode="graph",mode="random", vertex.cex=1.5,main="Случайная укладка") 
+gplot(Moreno,gmode="graph",mode="fruchtermanreingold", vertex.cex=1.5,main="Фрюхтерман-Рейнгольд") 
 par(op) 
 
 
@@ -132,18 +139,22 @@ par(op)
 
 detach(package:statnet) 
 library(igraph) 
+#install.packages("intergraph")
 library(intergraph) 
 iBali <- asIgraph(Bali)
 op <- par(mar=c(0,0,3,0),mfrow=c(1,3)) 
-plot(iBali,layout=layout_in_circle, main="????????") 
-plot(iBali,layout=layout_randomly, main="?????????") 
-plot(iBali,layout=layout_with_kk,  main="??????-?????") 
+plot(iBali,layout=layout_in_circle, main="Круговая") 
+plot(iBali,layout=layout_randomly, main="Случайная") 
+plot(iBali,layout=layout_with_kk,  main="Камада-Каваи") 
 par(op)
 
 
-my_pal <- brewer.pal(5,"Dark2") 
-deg <- degree(Bali,gmode="graph") 
-rolecat <- as.factor(get.vertex.attribute(Bali,"role")) 
-plot(Bali,usearrows=FALSE,vertex.cex=log(deg),vertex.col=my_pal[rolecat]  ) 
-par(op) 
-legend("bottomleft",legend=c("BM","CT","OA","SB","TL"), col=my_pal,pch=19,pt.cex=1.5,bty="n", title="???? ??????????")
+#install.packages("RColorBrewer")
+library(RColorBrewer)
+data(Bali)
+my_pal <- brewer.pal(5,"Set2")
+rolecat <- Bali %v% "role"
+gplot(Bali,usearrows=FALSE,displaylabels=TRUE, vertex.col=my_pal[as.factor(rolecat)],
+      edge.lwd=0,edge.col="grey25")
+legend("topright",legend=c("BM","CT","OA","SB",
+                           "TL"),col=my_pal,pch=19,pt.cex=2)

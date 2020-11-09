@@ -1,6 +1,6 @@
-renv::init() # инициализация виртуального окружения
-renv::install("MASS") # установка библиотеки из CRAN
-renv::snapshot() # делаем снимок версий библиотек в нашем виртуальном окружении
+#renv::init() # инициализация виртуального окружения
+#renv::install("MASS") # установка библиотеки из CRAN
+#renv::snapshot() # делаем снимок версий библиотек в нашем виртуальном окружении
 # фиксируем этот список в .lock-файле для возможности восстановления
 # renv::restore() # команда отктиться к предыдушему удачному обновления библиотек
 
@@ -14,6 +14,7 @@ renv::snapshot() # делаем снимок версий библиотек в 
 # rm (среднее число комнат в доме), age(средний возраст дома), lstat(процент домохозяйств с низким эк статусом)
 
 library(MASS)
+library(tidyverse)
 fix(Boston)
 names(Boston)
 
@@ -67,7 +68,7 @@ ggplot(data = Boston) +
 # Множественная линейная регрессия
 # синтаксис lm(y~x1 + x2 + x3) для трех предикторов
 
-lm.fit <- lm(medv~lstat+age+black, data = Boston)
+lm.fit <- lm(medv~lstat+age, data = Boston)
 summary(lm.fit)
 
 lm.fit <- lm(medv~ ., data = Boston)

@@ -36,7 +36,7 @@ print.employee <- function(wrkr){
 }
 
 # теперь любой вызов print() для объекта класса employee теперь должен обозначаться print.employee()
-methods(, "employee")
+methods(,"employee")
 print.employee
 
 j
